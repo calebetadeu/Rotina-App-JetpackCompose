@@ -7,12 +7,14 @@ sealed interface InputValidationError : com.example.rotinaapp.core.domain._util.
         data object Format : EmailValidatorError
     }
 
-//    sealed interface PasswordValidatorError : InputValidationError {
-//        data object Missing : PasswordValidatorError
-//        data object Format : PasswordValidatorError
-//        data object Length : PasswordValidatorError
-//    }
-
+    sealed interface PasswordValidatorError : InputValidationError {
+        data object Missing : PasswordValidatorError
+        data object Format : PasswordValidatorError
+        data object Length : PasswordValidatorError
+    }
+    sealed interface PasswordConfirmValidatorError : InputValidationError {
+      data object SamePassword : PasswordConfirmValidatorError
+    }
     sealed interface UserNameValidatorError : InputValidationError {
         data object Missing : UserNameValidatorError
       //  data object Format : UserNameValidatorError

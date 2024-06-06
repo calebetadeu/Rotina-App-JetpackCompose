@@ -8,7 +8,7 @@ import com.example.rotinaapp.features.auth.domain.model.InputValidationType
 class ValidateRegistrationFieldsUseCase(
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validateUserNameUseCase: ValidateUserNameUseCase,
-    // private val validatePasswordUseCase: ValidatePasswordUseCase,
+     private val validatePasswordUseCase: ValidatePasswordUseCase,
 ) {
 
     operator fun invoke(
@@ -27,11 +27,11 @@ class ValidateRegistrationFieldsUseCase(
                 }
             }
 
-//            is InputValidationType.PasswordInputValidationType -> {
-//                validatePasswordUseCase(inputValidationType.password)?.let {
-//                    listOfErrors.add(it)
-//                }
-//            }
+            is InputValidationType.PasswordInputValidationType -> {
+                validatePasswordUseCase(inputValidationType.password)?.let {
+                    listOfErrors.add(it)
+                }
+            }
 
             is InputValidationType.AllFieldsRegisterValidationType -> {
                 validateUserNameUseCase(inputValidationType.userName)?.let {
@@ -39,9 +39,9 @@ class ValidateRegistrationFieldsUseCase(
                 }
 
                 validateEmailUseCase(inputValidationType.email)?.let { listOfErrors.add(it) }
-//                validatePasswordUseCase(inputValidationType.password)?.let {
-//                    listOfErrors.add(it)
-//                }
+                validatePasswordUseCase(inputValidationType.password)?.let {
+                    listOfErrors.add(it)
+                }
             }
         }
         return if (listOfErrors.isEmpty()) {

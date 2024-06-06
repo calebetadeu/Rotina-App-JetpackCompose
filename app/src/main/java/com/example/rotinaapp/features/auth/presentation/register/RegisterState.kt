@@ -8,9 +8,12 @@ data class RegisterState(
     val userNameErrMsg: UiText? = null,
     val userEMail: String = String.EMPTY_STRING,
     val emailErrMsg: UiText? = null,
-//    val password: String = String.EMPTY_STRING,
-//    val passwordErrMsg: UiText? = null,
-//    val isPasswordVisible: Boolean = false,
+    val password: String = String.EMPTY_STRING,
+    val passwordErrMsg: UiText? = null,
+    val isPasswordVisible: Boolean = false,
+    val confirmPassword: String = String.EMPTY_STRING,
+    val confirmPasswordErrMsg: UiText? = null,
+    val isConfirmPasswordVisible: Boolean = false,
     val isUserNameChecked: Boolean = false,
     val isEmailChecked: Boolean = false
 )

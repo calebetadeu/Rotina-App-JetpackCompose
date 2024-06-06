@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rotinaapp.coreUi.LocalSpacing
 import com.example.rotinaapp.features.auth.presentation._common.components.InputBasic
+import com.example.rotinaapp.features.auth.presentation._common.components.InputPassword
 import com.example.rotinaapp.ui.theme.RotinaAppTheme
 
 @Composable
@@ -58,6 +59,32 @@ fun RegisterScreen(
                 emailErrMsg = state.emailErrMsg?.asString(),
                 isUserNameChecked = state.isUserNameChecked,
                 isEmailChecked = state.isEmailChecked,
+                password = state.password,
+                onPasswordChanged = {password->
+                    onAction(RegisterAction.OnPasswordChanged(password))
+
+                },
+                onPasswordFocusChanged = {isFocus->
+                    onAction(RegisterAction.OnPasswordFocusChanged(isFocus))
+
+                },
+                passwordErrMsg = state.passwordErrMsg?.asString(),
+                isPasswordVisible = state.isPasswordVisible,
+                confirmPassword = state.confirmPassword,
+                onConfirmPasswordChanged = {confirmPassword->
+                    onAction(RegisterAction.OnConfirmPasswordChanged(confirmPassword))
+
+                },
+                onConfirmPasswordFocusChanged = {isFocus->
+                    onAction(RegisterAction.OnConfirmPasswordFocusChanged(isFocus))
+
+                },
+                confirmPasswordErrMsg = state.confirmPasswordErrMsg?.asString(),
+                onVisibilityIconClicked = {
+                    onAction(RegisterAction.OnChangePasswordVisibility)
+                },
+                isConfirmPasswordVisible = state.isConfirmPasswordVisible,
+
                 onButtonClicked = {
                     onAction(RegisterAction.OnRegisterButtonClicked)
                 }
@@ -76,12 +103,24 @@ fun Form(
     onUserFocusChanged: (Boolean) -> Unit,
     userEmail: String,
     userNameErrMsg: String?,
+    isUserNameChecked: Boolean,
     emailErrMsg: String?,
     onUserEmailChanged: (String) -> Unit,
     onEmailFocusChanged: (Boolean) -> Unit,
-    isUserNameChecked: Boolean,
-    onButtonClicked: () -> Unit,
     isEmailChecked: Boolean,
+    password: String,
+    onPasswordChanged: (String) -> Unit,
+    onPasswordFocusChanged: (Boolean) -> Unit,
+    passwordErrMsg: String?,
+    isPasswordVisible: Boolean,
+    onVisibilityIconClicked: () -> Unit,
+    confirmPassword: String,
+    isConfirmPasswordVisible: Boolean,
+    onConfirmPasswordChanged: (String) -> Unit,
+    onConfirmPasswordFocusChanged: (Boolean) -> Unit,
+    confirmPasswordErrMsg: String?,
+    onButtonClicked: () -> Unit,
+
 ) {
     //Local Spacing
     val spacing = LocalSpacing.current
@@ -111,6 +150,28 @@ fun Form(
             errorMessage = emailErrMsg,
             isInputChecked = isEmailChecked,
             label = "Email"
+        )
+        InputPassword(
+            passwordText = password,
+            onPasswordChanged = {
+                onPasswordChanged(it)
+            },
+            label = "Senha",
+            onPasswordFocusChanged = onPasswordFocusChanged,
+            errorMessage = passwordErrMsg,
+            isVisible = isPasswordVisible,
+            onVisibilityIconClick = onVisibilityIconClicked
+        )
+        InputPassword(
+            passwordText = confirmPassword,
+            onPasswordChanged = {
+                onConfirmPasswordChanged(it)
+            },
+            label = "Confirmar Senha",
+            onPasswordFocusChanged = onConfirmPasswordFocusChanged,
+            errorMessage = confirmPasswordErrMsg,
+            isVisible = isConfirmPasswordVisible,
+            onVisibilityIconClick = onVisibilityIconClicked
         )
         Button(
             onClick = onButtonClicked,
