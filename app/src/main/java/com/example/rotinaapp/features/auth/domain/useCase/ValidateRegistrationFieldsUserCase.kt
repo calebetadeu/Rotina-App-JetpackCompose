@@ -8,7 +8,7 @@ import com.example.rotinaapp.features.auth.domain.model.InputValidationType
 class ValidateRegistrationFieldsUseCase(
     private val validateEmailUseCase: ValidateEmailUseCase,
     private val validateUserNameUseCase: ValidateUserNameUseCase,
-     private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
 ) {
 
     operator fun invoke(
