@@ -13,7 +13,7 @@ internal fun RotinaNavHost() {
 
     NavHost(navController = navController, startDestination = Register) {
         composable<Register> {
-            RegisterRoot(navController)
+            RegisterRoot()
         }
     }
 }

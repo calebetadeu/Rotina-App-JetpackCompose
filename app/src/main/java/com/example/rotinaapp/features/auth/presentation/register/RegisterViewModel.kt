@@ -38,6 +38,7 @@ class  RegisterViewModel(
                     InputValidationType.AllFieldsRegisterValidationType(
                         state.fullName,
                         state.userEMail,
+                        state.password
                     )
                 )
             }
@@ -45,8 +46,37 @@ class  RegisterViewModel(
                 if (action.isFocus) {
                     state = state.copy(userNameErrMsg = null)
                 } else {
-                   // validateInputs(InputValidationType.UserNameInputValidationType(state.fullName))
+                   validateInputs(InputValidationType.UserNameInputValidationType(state.fullName))
                 }
+            }
+
+            RegisterAction.OnChangePasswordVisibility -> {
+                state = state.copy(isPasswordVisible = !state.isPasswordVisible)
+            }
+            is RegisterAction.OnPasswordChanged -> {
+                state = state.copy(password = action.password)
+
+            }
+            is RegisterAction.OnPasswordFocusChanged -> {
+                if (action.isFocus) {
+                    state = state.copy(passwordErrMsg = null)
+                }
+            }
+            is RegisterAction.OnConfirmPasswordChanged ->{
+                state = state.copy(confirmPassword =action.confirmPassword )
+            }
+
+            is RegisterAction.OnConfirmPasswordFocusChanged ->{
+                if(action.isFocus){
+                    state = state.copy(confirmPasswordErrMsg = null)
+                }
+            }
+            is RegisterAction.OnConfirmPasswordVisibilityChanged->{
+                state = state.copy(isConfirmPasswordVisible = !state.isConfirmPasswordVisible)
+            }
+
+            is RegisterAction.OnPasswordVisibilityChanged -> {
+                state = state.copy(isPasswordVisible = action.isVisible)
             }
         }
 
@@ -101,7 +131,7 @@ class  RegisterViewModel(
                             state =
                                 state.copy(userNameErrMsg = DynamicString("Nome com tamanho inválido"))
                         }
-                        
+
                         InputValidationError.EmailValidatorError.Missing -> {
                             state =
                                 state.copy(emailErrMsg = DynamicString("Você precisa digitar um email"))
@@ -110,6 +140,23 @@ class  RegisterViewModel(
                         InputValidationError.EmailValidatorError.Format -> {
                             state =
                                 state.copy(emailErrMsg = DynamicString( "Formato inválido"))
+                        }
+
+                        InputValidationError.PasswordValidatorError.Format -> {
+                            state =
+                                state.copy(passwordErrMsg = DynamicString( "Senha com formato inválido"))
+                        }
+                        InputValidationError.PasswordValidatorError.Length -> {
+                            state =
+                                state.copy(passwordErrMsg = DynamicString("Senha deve conter no minimo 4 digitos"))
+                        }
+                        InputValidationError.PasswordValidatorError.Missing -> {
+                            state =
+                                state.copy(passwordErrMsg = DynamicString("Você precisa digitar uma senha"))
+                        }
+
+                        InputValidationError.PasswordConfirmValidatorError.SamePassword ->{
+                            state = state.copy(confirmPasswordErrMsg = DynamicString( "As senhas devem ser iguais"))
                         }
                     }
                 }
@@ -121,7 +168,7 @@ class  RegisterViewModel(
     private fun cleanErrors() {
         state = state.copy(
             emailErrMsg = null,
-           // passwordErrMsg = null,
+            passwordErrMsg = null,
             userNameErrMsg = null,
         )
     }

@@ -1,6 +1,8 @@
 package com.example.rotinaapp.features.auth.di
 
+import com.example.rotinaapp.features.auth.domain.useCase.ValidateConfirmPasswordUseCase
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateEmailUseCase
+import com.example.rotinaapp.features.auth.domain.useCase.ValidatePasswordUseCase
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateRegistrationFieldsUseCase
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateUserNameUseCase
 import com.example.rotinaapp.features.auth.presentation.register.RegisterViewModel
@@ -22,4 +24,7 @@ private fun Module.domainModule() {
     factoryOf(::ValidateEmailUseCase)
     factoryOf(::ValidateUserNameUseCase)
     factoryOf(::ValidateRegistrationFieldsUseCase)
+    factoryOf(::ValidatePasswordUseCase)
+    factoryOf(::ValidateConfirmPasswordUseCase)
+
 }
