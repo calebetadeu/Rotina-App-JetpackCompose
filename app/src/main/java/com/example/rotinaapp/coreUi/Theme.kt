@@ -1,4 +1,4 @@
-package com.example.rotinaapp.ui.theme
+package com.example.rotinaapp.coreUi
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -11,25 +11,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Primary,
+    secondary = Secondary,
+    background = Background,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Primary,
+    secondary = Secondary,
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    background = Background,
+//    surface = Color(0xFFFFFBFE),
+//    onPrimary = Color.White,
+//    onSecondary = Color.White,
+//    onTertiary = Color.White,
+//    onBackground = Color(0xFF1C1B1F),
+//    onSurface = Color(0xFF1C1B1F),
+//    */
 )
 
 @Composable

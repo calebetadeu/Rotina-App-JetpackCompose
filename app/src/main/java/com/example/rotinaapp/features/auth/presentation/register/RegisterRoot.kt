@@ -9,13 +9,16 @@ fun RegisterRoot(
     viewModel: RegisterViewModel = koinViewModel(),
 ) {
 
+
     RegisterScreen(
         state = viewModel.state,
-        onAction = {action->
+        onAction = { action ->
             viewModel.onAction(action)
         }
     )
 
+
 }
+
 @Serializable
 object Register

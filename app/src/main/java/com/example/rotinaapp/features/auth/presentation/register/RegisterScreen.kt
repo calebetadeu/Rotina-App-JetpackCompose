@@ -1,25 +1,27 @@
 package com.example.rotinaapp.features.auth.presentation.register
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.rotinaapp.coreUi.LocalSpacing
+import com.example.rotinaapp.features.auth.presentation._common.BaseAuthScreen
+import com.example.rotinaapp.features.auth.presentation._common.components.ButtonBasic
+import com.example.rotinaapp.features.auth.presentation._common.components.ButtonSocial
+import com.example.rotinaapp.features.auth.presentation._common.components.DividerAuth
 import com.example.rotinaapp.features.auth.presentation._common.components.InputBasic
 import com.example.rotinaapp.features.auth.presentation._common.components.InputPassword
-import com.example.rotinaapp.ui.theme.RotinaAppTheme
 
 @Composable
 fun RegisterScreen(
@@ -27,32 +29,35 @@ fun RegisterScreen(
     onAction: (RegisterAction) -> Unit
 ) {
 
-    Scaffold(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Criar conta")
+
+
+    BaseAuthScreen(
+        topBarHeight = 100.dp,
+        content = {
+
+            Text(
+                "Criar conta",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                fontSize = 21.sp
+            )
             Form(
                 userName = state.fullName,
-                onUserNameChanged = {userName->
+                onUserNameChanged = { userName ->
                     onAction(RegisterAction.OnUserNameChanged(userName))
 
                 },
-                onUserFocusChanged = {isFocus->
+                onUserFocusChanged = { isFocus ->
                     onAction(RegisterAction.OnUserNameFocusChanged(isFocus))
 
                 },
                 userNameErrMsg = state.userNameErrMsg?.asString(),
                 userEmail = state.userEMail,
-                onEmailFocusChanged = {isFocus->
+                onEmailFocusChanged = { isFocus ->
                     onAction(RegisterAction.OnEmailFocusChanged(isFocus))
 
                 },
-                onUserEmailChanged = {userEMail->
+                onUserEmailChanged = { userEMail ->
                     onAction(RegisterAction.OnEmailChanged(userEMail))
 
                 },
@@ -60,22 +65,22 @@ fun RegisterScreen(
                 isUserNameChecked = state.isUserNameChecked,
                 isEmailChecked = state.isEmailChecked,
                 password = state.password,
-                onPasswordChanged = {password->
+                onPasswordChanged = { password ->
                     onAction(RegisterAction.OnPasswordChanged(password))
 
                 },
-                onPasswordFocusChanged = {isFocus->
+                onPasswordFocusChanged = { isFocus ->
                     onAction(RegisterAction.OnPasswordFocusChanged(isFocus))
 
                 },
                 passwordErrMsg = state.passwordErrMsg?.asString(),
                 isPasswordVisible = state.isPasswordVisible,
                 confirmPassword = state.confirmPassword,
-                onConfirmPasswordChanged = {confirmPassword->
+                onConfirmPasswordChanged = { confirmPassword ->
                     onAction(RegisterAction.OnConfirmPasswordChanged(confirmPassword))
 
                 },
-                onConfirmPasswordFocusChanged = {isFocus->
+                onConfirmPasswordFocusChanged = { isFocus ->
                     onAction(RegisterAction.OnConfirmPasswordFocusChanged(isFocus))
 
                 },
@@ -83,15 +88,25 @@ fun RegisterScreen(
                 onVisibilityIconClicked = {
                     onAction(RegisterAction.OnChangePasswordVisibility)
                 },
+
+                onConfirmVisibilityIconClicked = {
+                    onAction(RegisterAction.OnConfirmPasswordVisibilityChanged)
+                },
                 isConfirmPasswordVisible = state.isConfirmPasswordVisible,
 
                 onButtonClicked = {
                     onAction(RegisterAction.OnRegisterButtonClicked)
-                }
+                },
+                onButtonClickedGoogleRegister = {
+                    onAction(RegisterAction.OnRegisterGoogleRegister)
+                },
+                isLoading = state.isLoading,
+                isLoadingGoogle = state.isLoadingGoogleRegister
             )
 
+
         }
-    }
+    )
 
 }
 
@@ -114,30 +129,35 @@ fun Form(
     passwordErrMsg: String?,
     isPasswordVisible: Boolean,
     onVisibilityIconClicked: () -> Unit,
+    onConfirmVisibilityIconClicked: () -> Unit,
     confirmPassword: String,
     isConfirmPasswordVisible: Boolean,
     onConfirmPasswordChanged: (String) -> Unit,
     onConfirmPasswordFocusChanged: (Boolean) -> Unit,
     confirmPasswordErrMsg: String?,
+    isLoading: Boolean,
+    isLoadingGoogle: Boolean,
+    onButtonClickedGoogleRegister: () -> Unit,
     onButtonClicked: () -> Unit,
 
-) {
-    //Local Spacing
+    ) {
     val spacing = LocalSpacing.current
 
     Column(
         modifier = modifier
+            .fillMaxSize()
             .padding(
                 start = spacing.spaceLarge,
-                top = spacing.spaceLarge,
-                end = spacing.spaceLarge
-            )
+                top = spacing.spaceTiny,
+               // end = spacing.spaceLarge
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+      //  verticalArrangement = Arrangement.SpaceEvenly
     ) {
         InputBasic(
             inputText = userName,
             onInputTextChanged = onUserNameChanged,
             label = "Nome Completo",
-            leadingIcon = Icons.Default.CheckCircle,
             errorMessage = userNameErrMsg,
             isInputChecked = isUserNameChecked,
             onInputFocusChanged = onUserFocusChanged
@@ -171,32 +191,58 @@ fun Form(
             onPasswordFocusChanged = onConfirmPasswordFocusChanged,
             errorMessage = confirmPasswordErrMsg,
             isVisible = isConfirmPasswordVisible,
-            onVisibilityIconClick = onVisibilityIconClicked
+            onVisibilityIconClick = onConfirmVisibilityIconClicked
         )
-        Button(
+        ButtonBasic(
             onClick = onButtonClicked,
-            modifier = Modifier
-                .padding(
-                    top = spacing.spaceLarge,
-                )
-                .fillMaxWidth(),
+            isLoading = isLoading,
+            modifier = Modifier,
+//                .padding(
+//                    top = spacing.spaceLarge,
+//                ),
+            //.fillMaxWidth(),
+            textButton = "Cadastrar"
+        )
+        DividerAuth()
+        ButtonSocial(
+            textButton = "Cadastre com Google",
+            onClick = onButtonClickedGoogleRegister,
+            isLoading = isLoadingGoogle
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Cadastrar")
+            Text(
+                "Ja tem uma conta?",
+
+            )
+
+            TextButton(
+                onClick = {
+
+                }
+            ) {
+                Text("Faça Login",
+                    fontSize = 16.sp,
+                    textDecoration = TextDecoration.Underline)
+
+            }
         }
+
 
     }
 
 }
 
+
 @Preview(showBackground = true)
 @Composable
 private fun RegisterScreenPreview() {
-    RotinaAppTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            //RegisterScreen()
-        }
-    }
+
+    RegisterScreen(
+        state = RegisterState(),
+        onAction = {}
+    )
+
+
 }

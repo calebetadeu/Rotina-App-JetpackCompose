@@ -15,4 +15,5 @@ sealed class RegisterAction {
 
  //   data object NavigateBackToLogin : RegisterAction()
     data object OnRegisterButtonClicked : RegisterAction()
+    data object OnRegisterGoogleRegister : RegisterAction()
 }

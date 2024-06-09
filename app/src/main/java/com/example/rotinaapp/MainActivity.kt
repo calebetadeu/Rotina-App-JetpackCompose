@@ -8,22 +8,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.rotinaapp.coreUi.RotinaAppTheme
 import com.example.rotinaapp.navigation.RotinaNavHost
-import com.example.rotinaapp.ui.theme.RotinaAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            RotinaAppTheme {
-               Surface(
+            RotinaAppTheme(
+                darkTheme = false
+            ) {
+                Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-               ) {
+                ) {
                     RotinaNavHost()
-               }
+                }
             }
         }
     }
 }
+
