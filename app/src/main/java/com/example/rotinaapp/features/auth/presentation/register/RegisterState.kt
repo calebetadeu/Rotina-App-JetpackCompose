@@ -15,5 +15,8 @@ data class RegisterState(
     val confirmPasswordErrMsg: UiText? = null,
     val isConfirmPasswordVisible: Boolean = false,
     val isUserNameChecked: Boolean = false,
-    val isEmailChecked: Boolean = false
+    val isEmailChecked: Boolean = false,
+    val isLoading: Boolean = false,
+    val isLoadingGoogleRegister: Boolean = false,
+
 )

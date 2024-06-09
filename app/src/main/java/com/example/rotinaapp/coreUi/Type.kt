@@ -1,4 +1,4 @@
-package com.example.rotinaapp.ui.theme
+package com.example.rotinaapp.coreUi
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

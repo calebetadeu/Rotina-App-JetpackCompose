@@ -4,25 +4,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.rotinaapp.core.presentation.util.UiText.DynamicString
 import com.example.rotinaapp.features.auth.domain.model.InputValidationError
 import com.example.rotinaapp.features.auth.domain.model.InputValidationErrors
 import com.example.rotinaapp.features.auth.domain.model.InputValidationType
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateRegistrationFieldsUseCase
+import kotlinx.coroutines.launch
 
-class  RegisterViewModel(
+class RegisterViewModel(
     private val validateRegistrationFieldsUseCase: ValidateRegistrationFieldsUseCase,
 //    private val registerUseCase:
 //    private val eventSender: UiEventSender
-): ViewModel() {
+) : ViewModel() {
     var state by mutableStateOf(RegisterState())
-    private set
-    fun onAction(action: RegisterAction){
-        when(action){
+        private set
+
+    fun onAction(action: RegisterAction) {
+        when (action) {
             is RegisterAction.OnUserNameChanged -> {
                 state = state.copy(fullName = action.userName)
             }
-            is RegisterAction.OnEmailChanged->{
+
+            is RegisterAction.OnEmailChanged -> {
                 state = state.copy(userEMail = action.email)
             }
 
@@ -30,48 +34,65 @@ class  RegisterViewModel(
                 if (action.isFocus) {
                     state = state.copy(emailErrMsg = null)
                 } else {
-                   // validateInputs(InputValidationType.EmailInputValidationType(state.email))
+                    // validateInputs(InputValidationType.EmailInputValidationType(state.email))
                 }
             }
-            RegisterAction.OnRegisterButtonClicked -> {
-                validateInputs(
-                    InputValidationType.AllFieldsRegisterValidationType(
-                        state.fullName,
-                        state.userEMail,
-                        state.password
-                    )
-                )
+
+            RegisterAction.OnRegisterGoogleRegister -> {
+                viewModelScope.launch {
+                    state = state.copy(isLoadingGoogleRegister = true)
+                }
+
             }
+
+            RegisterAction.OnRegisterButtonClicked -> {
+                viewModelScope.launch {
+                    state = state.copy(isLoading = true)
+                }
+
+//                validateInputs(
+//                    InputValidationType.AllFieldsRegisterValidationType(
+//                        state.fullName,
+//                        state.userEMail,
+//                        state.password
+//                    )
+//                )
+            }
+
             is RegisterAction.OnUserNameFocusChanged -> {
                 if (action.isFocus) {
                     state = state.copy(userNameErrMsg = null)
                 } else {
-                   validateInputs(InputValidationType.UserNameInputValidationType(state.fullName))
+                    validateInputs(InputValidationType.UserNameInputValidationType(state.fullName))
                 }
             }
 
             RegisterAction.OnChangePasswordVisibility -> {
                 state = state.copy(isPasswordVisible = !state.isPasswordVisible)
             }
+
             is RegisterAction.OnPasswordChanged -> {
                 state = state.copy(password = action.password)
 
             }
+
             is RegisterAction.OnPasswordFocusChanged -> {
                 if (action.isFocus) {
                     state = state.copy(passwordErrMsg = null)
                 }
             }
-            is RegisterAction.OnConfirmPasswordChanged ->{
-                state = state.copy(confirmPassword =action.confirmPassword )
+
+            is RegisterAction.OnConfirmPasswordChanged -> {
+                state = state.copy(confirmPassword = action.confirmPassword)
             }
 
-            is RegisterAction.OnConfirmPasswordFocusChanged ->{
-                if(action.isFocus){
+            is RegisterAction.OnConfirmPasswordFocusChanged -> {
+                if (action.isFocus) {
                     state = state.copy(confirmPasswordErrMsg = null)
                 }
             }
-            is RegisterAction.OnConfirmPasswordVisibilityChanged->{
+
+            is RegisterAction.OnConfirmPasswordVisibilityChanged -> {
                 state = state.copy(isConfirmPasswordVisible = !state.isConfirmPasswordVisible)
             }
 
@@ -81,6 +102,7 @@ class  RegisterViewModel(
         }
 
     }
+
     private fun validateInputs(
         inputValidationType: InputValidationType
     ) {
@@ -107,8 +129,12 @@ class  RegisterViewModel(
             }
         }
     }
-    private fun onValidationError(failure: InputValidationErrors, inputValidationType: InputValidationType) {
-        val validationsErrors = (failure as InputValidationErrors).validationErrors
+
+    private fun onValidationError(
+        failure: InputValidationErrors,
+        inputValidationType: InputValidationType
+    ) {
+        val validationsErrors = (failure).validationErrors
         when (inputValidationType) {
             is InputValidationType.EmailInputValidationType ->
                 state =
@@ -124,7 +150,7 @@ class  RegisterViewModel(
                     when (inputValidationErrors) {
                         InputValidationError.UserNameValidatorError.Missing -> {
                             state =
-                                state.copy(userNameErrMsg = DynamicString("Você precisa digitar um nome de usuário") )//UiText.StringResource(R.string.error_mandatory_field))
+                                state.copy(userNameErrMsg = DynamicString("Você precisa digitar um nome de usuário"))//UiText.StringResource(R.string.error_mandatory_field))
                         }
 
                         InputValidationError.UserNameValidatorError.Length -> {
@@ -139,24 +165,27 @@ class  RegisterViewModel(
 
                         InputValidationError.EmailValidatorError.Format -> {
                             state =
-                                state.copy(emailErrMsg = DynamicString( "Formato inválido"))
+                                state.copy(emailErrMsg = DynamicString("Formato inválido"))
                         }
 
                         InputValidationError.PasswordValidatorError.Format -> {
                             state =
-                                state.copy(passwordErrMsg = DynamicString( "Senha com formato inválido"))
+                                state.copy(passwordErrMsg = DynamicString("Senha com formato inválido"))
                         }
+
                         InputValidationError.PasswordValidatorError.Length -> {
                             state =
                                 state.copy(passwordErrMsg = DynamicString("Senha deve conter no minimo 4 digitos"))
                         }
+
                         InputValidationError.PasswordValidatorError.Missing -> {
                             state =
                                 state.copy(passwordErrMsg = DynamicString("Você precisa digitar uma senha"))
                         }
 
-                        InputValidationError.PasswordConfirmValidatorError.SamePassword ->{
-                            state = state.copy(confirmPasswordErrMsg = DynamicString( "As senhas devem ser iguais"))
+                        InputValidationError.PasswordConfirmValidatorError.SamePassword -> {
+                            state =
+                                state.copy(confirmPasswordErrMsg = DynamicString("As senhas devem ser iguais"))
                         }
                     }
                 }
