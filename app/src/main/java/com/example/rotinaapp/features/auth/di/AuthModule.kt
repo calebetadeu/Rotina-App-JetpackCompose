@@ -6,6 +6,7 @@ import com.example.rotinaapp.features.auth.domain.useCase.ValidatePasswordUseCas
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateRegistrationFieldsUseCase
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateUserNameUseCase
 import com.example.rotinaapp.features.auth.presentation.register.RegisterViewModel
+import com.example.rotinaapp.features.auth.presentation.login.LoginViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -18,6 +19,7 @@ val authModule = module {
 
 private fun Module.presentationModule() {
     viewModelOf(::RegisterViewModel)
+    viewModelOf(::LoginViewModel)
 }
 
 private fun Module.domainModule() {

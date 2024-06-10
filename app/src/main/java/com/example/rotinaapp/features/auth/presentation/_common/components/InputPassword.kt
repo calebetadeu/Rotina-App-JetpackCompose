@@ -1,7 +1,6 @@
 package com.example.rotinaapp.features.auth.presentation._common.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -19,7 +18,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import com.example.rotinaapp.R
 
 @Composable
@@ -41,11 +39,8 @@ fun InputPassword(
             .fillMaxWidth()
             .onFocusChanged { focusState ->
                 onPasswordFocusChanged?.let { it(focusState.isFocused) }
-            }
-            .size(65.dp
-            )
-        ,
-       // colors = colors,
+            },
+        // colors = colors,
         value = passwordText,
         onValueChange = { onPasswordChanged(it) },
         isError = !errorMessage.isNullOrBlank(),
