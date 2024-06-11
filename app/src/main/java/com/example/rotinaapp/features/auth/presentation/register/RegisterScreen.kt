@@ -1,25 +1,23 @@
 package com.example.rotinaapp.features.auth.presentation.register
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rotinaapp.coreUi.LocalSpacing
 import com.example.rotinaapp.features.auth.presentation._common.BaseAuthScreen
 import com.example.rotinaapp.features.auth.presentation._common.components.ButtonBasic
-import com.example.rotinaapp.features.auth.presentation._common.components.ButtonSocial
-import com.example.rotinaapp.features.auth.presentation._common.components.DividerAuth
+import com.example.rotinaapp.features.auth.presentation._common.components.FooterAuth
 import com.example.rotinaapp.features.auth.presentation._common.components.InputBasic
 import com.example.rotinaapp.features.auth.presentation._common.components.InputPassword
 
@@ -30,17 +28,11 @@ fun RegisterScreen(
 ) {
 
 
-
     BaseAuthScreen(
-        topBarHeight = 100.dp,
+        topBarHeight = 60.dp,
         content = {
 
-            Text(
-                "Criar conta",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontSize = 21.sp
-            )
+
             Form(
                 userName = state.fullName,
                 onUserNameChanged = { userName ->
@@ -101,7 +93,10 @@ fun RegisterScreen(
                     onAction(RegisterAction.OnRegisterGoogleRegister)
                 },
                 isLoading = state.isLoading,
-                isLoadingGoogle = state.isLoadingGoogleRegister
+                isLoadingGoogle = state.isLoadingGoogleRegister,
+                onNavigateBackToLogin = {
+                    onAction(RegisterAction.NavigateBackToLogin)
+                }
             )
 
 
@@ -111,7 +106,7 @@ fun RegisterScreen(
 }
 
 @Composable
-fun Form(
+private fun Form(
     modifier: Modifier = Modifier,
     userName: String,
     onUserNameChanged: (String) -> Unit,
@@ -139,8 +134,9 @@ fun Form(
     isLoadingGoogle: Boolean,
     onButtonClickedGoogleRegister: () -> Unit,
     onButtonClicked: () -> Unit,
+    onNavigateBackToLogin: () -> Unit
 
-    ) {
+) {
     val spacing = LocalSpacing.current
 
     Column(
@@ -149,11 +145,18 @@ fun Form(
             .padding(
                 start = spacing.spaceLarge,
                 top = spacing.spaceTiny,
-               // end = spacing.spaceLarge
+                // end = spacing.spaceLarge
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
-      //  verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        Text(
+            "Criar conta",
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            fontSize = 21.sp
+        )
         InputBasic(
             inputText = userName,
             onInputTextChanged = onUserNameChanged,
@@ -203,32 +206,15 @@ fun Form(
             //.fillMaxWidth(),
             textButton = "Cadastrar"
         )
-        DividerAuth()
-        ButtonSocial(
-            textButton = "Cadastre com Google",
-            onClick = onButtonClickedGoogleRegister,
-            isLoading = isLoadingGoogle
+
+        FooterAuth(
+            onNavigateBackToLogin = onNavigateBackToLogin,
+            questionText = "Já tem uma conta",
+            textLink = "Faça Login",
+            isLoadingGoogle = isLoadingGoogle,
+            onButtonClickedGoogle = onButtonClickedGoogleRegister,
+            textGoogle = "Cadastre-se com a Google "
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                "Ja tem uma conta?",
-
-            )
-
-            TextButton(
-                onClick = {
-
-                }
-            ) {
-                Text("Faça Login",
-                    fontSize = 16.sp,
-                    textDecoration = TextDecoration.Underline)
-
-            }
-        }
-
 
     }
 
