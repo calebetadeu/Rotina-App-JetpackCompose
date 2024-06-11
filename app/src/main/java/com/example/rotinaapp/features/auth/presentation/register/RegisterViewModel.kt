@@ -99,6 +99,8 @@ class RegisterViewModel(
             is RegisterAction.OnPasswordVisibilityChanged -> {
                 state = state.copy(isPasswordVisible = action.isVisible)
             }
+
+            else -> {}
         }
 
     }

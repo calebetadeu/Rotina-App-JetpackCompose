@@ -13,7 +13,7 @@ sealed class RegisterAction {
     data object OnConfirmPasswordVisibilityChanged : RegisterAction()
     data class OnPasswordVisibilityChanged(val isVisible: Boolean) : RegisterAction()
 
- //   data object NavigateBackToLogin : RegisterAction()
+    data object NavigateBackToLogin : RegisterAction()
     data object OnRegisterButtonClicked : RegisterAction()
     data object OnRegisterGoogleRegister : RegisterAction()
 }

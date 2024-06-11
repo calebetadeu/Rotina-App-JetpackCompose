@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.rotinaapp.coreUi.Background
 import com.example.rotinaapp.coreUi.Primary
 import com.example.rotinaapp.coreUi.Secondary
+import com.example.rotinaapp.coreUi.presentOne
 
 @Composable
 fun BaseAuthScreen(
@@ -44,15 +45,21 @@ fun BaseAuthScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                    .background(Background)
-                    .padding(it),
+                    .background(Background),
+                horizontalAlignment = Alignment.CenterHorizontally
 
-                ) {
+
+
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(20.dp),
-                   // verticalArrangement = Arrangement.spacedBy(40.dp),
+                        .padding(20.dp)
+                        .background(Background),
+
+                    horizontalAlignment = Alignment.CenterHorizontally
+
+
                 ) {
                     content()
 
@@ -79,7 +86,7 @@ fun TopBarAuth(height: Dp) {
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        Text("ROUTINE", fontSize = 32.sp, color = Secondary)
+        Text("ROUTINE", fontSize = 36.sp, color = Secondary, fontFamily = presentOne)
 
     }
 }

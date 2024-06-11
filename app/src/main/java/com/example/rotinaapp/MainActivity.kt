@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.rotinaapp.coreUi.RotinaAppTheme
-import com.example.rotinaapp.navigation.RotinaNavHost
+import com.example.rotinaapp.navigation.RoutineNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RotinaNavHost()
+                    RoutineNavHost()
                 }
             }
         }
