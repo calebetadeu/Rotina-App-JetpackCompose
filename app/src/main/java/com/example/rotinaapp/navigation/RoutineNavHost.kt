@@ -11,12 +11,14 @@ import com.example.rotinaapp.features.auth.presentation.login.Login
 import com.example.rotinaapp.features.auth.presentation.login.LoginRoot
 import com.example.rotinaapp.features.auth.presentation.register.Register
 import com.example.rotinaapp.features.auth.presentation.register.RegisterRoot
+import com.example.rotinaapp.features.task.presentation.home.Home
+import com.example.rotinaapp.features.task.presentation.home.HomeRoot
 
 @Composable
 internal fun RoutineNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Login) {
+    NavHost(navController = navController, startDestination = Home) {
         composable<Login>(
             exitTransition = {
                 return@composable slideOutOfContainer(
@@ -46,6 +48,9 @@ internal fun RoutineNavHost() {
             },
         ) {
             RegisterRoot(navController = navController)
+        }
+        composable<Home> {
+            HomeRoot()
         }
 
     }
