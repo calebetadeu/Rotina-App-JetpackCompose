@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +47,7 @@ import com.example.rotinaapp.coreUi.RotinaAppTheme
 import com.example.rotinaapp.coreUi.Secondary
 import com.example.rotinaapp.coreUi.TitleSubtitle
 import com.example.rotinaapp.coreUi.TitleSubtitle2
+import com.example.rotinaapp.features.auth.domain.model.UserModel
 import com.example.rotinaapp.features.task.presentation.components.CardSelectWeek
 import com.example.rotinaapp.features.task.presentation.components.TaskCard
 import com.example.rotinaapp.features.task.presentation.components.TaskProgress
@@ -57,9 +59,14 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onAction: (TaskHomeAction) -> Unit,
+    user: UserModel?
+) {
     val daysMonth = getDaysMonth()
     val daysOfWeek = getDaysWeek()
+
 
 
     Scaffold(
@@ -74,19 +81,21 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text("Hoje", textAlign = TextAlign.Center)
+                        Text("Olá, ${user?.name.toString()}", textAlign = TextAlign.Center)
                     }
 
                 },
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { onAction(TaskHomeAction.OnLogout) }) {
                         Icon(Icons.Default.Menu, contentDescription = null)
                     }
                 },
+
                 actions = {
                     AsyncImage(
-                        model = "https://thumbs.dreamstime.com/b/modelo-adulto-masculino-atrativo-consider%C3%A1vel-da-pessoa-dos-retratos-pr%C3%B3ximos-de-face-para-cima-express%C3%A3o-tiros-autumn-season-134123931.jpg",
+                        model = user?.photoUrl,
                         contentDescription = null,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
@@ -273,7 +282,9 @@ fun String.dateFormatText(): String {
 @Composable
 fun HomePreviewScreen() {
     RotinaAppTheme {
-        HomeScreen()
+//        HomeScreen(
+//
+//        )
     }
 
 

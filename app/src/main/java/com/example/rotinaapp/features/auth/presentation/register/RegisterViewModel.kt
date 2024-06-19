@@ -5,20 +5,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rotinaapp.core.presentation.RoutineUiEvent
+import com.example.rotinaapp.core.presentation.util.UiEventSender
 import com.example.rotinaapp.core.presentation.util.UiText.DynamicString
 import com.example.rotinaapp.features.auth.domain.model.InputValidationError
 import com.example.rotinaapp.features.auth.domain.model.InputValidationErrors
 import com.example.rotinaapp.features.auth.domain.model.InputValidationType
+import com.example.rotinaapp.features.auth.domain.model.UserModel
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateRegistrationFieldsUseCase
+import com.example.rotinaapp.features.auth.domain.useCase.register.RegisterParams
+import com.example.rotinaapp.features.auth.domain.useCase.register.RegisterUseCase
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
     private val validateRegistrationFieldsUseCase: ValidateRegistrationFieldsUseCase,
-//    private val registerUseCase:
-//    private val eventSender: UiEventSender
+    private val registerUseCase: RegisterUseCase,
+    private val eventSender: UiEventSender
 ) : ViewModel() {
     var state by mutableStateOf(RegisterState())
         private set
+    private val _uiEvent = Channel<RegisterUiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
+    private val _user = MutableStateFlow<UserModel?>(null)
+
 
     fun onAction(action: RegisterAction) {
         when (action) {
@@ -46,17 +58,14 @@ class RegisterViewModel(
             }
 
             RegisterAction.OnRegisterButtonClicked -> {
-                viewModelScope.launch {
-                    state = state.copy(isLoading = true)
-                }
+                validateInputs(
+                    InputValidationType.AllFieldsRegisterValidationType(
+                        state.fullName,
+                        state.userEMail,
+                        state.password
+                    )
+                )
 
-//                validateInputs(
-//                    InputValidationType.AllFieldsRegisterValidationType(
-//                        state.fullName,
-//                        state.userEMail,
-//                        state.password
-//                    )
-//                )
             }
 
             is RegisterAction.OnUserNameFocusChanged -> {
@@ -109,7 +118,7 @@ class RegisterViewModel(
         inputValidationType: InputValidationType
     ) {
         validateRegistrationFieldsUseCase(inputValidationType).fold(
-            onError = {
+            onError = { it, _ ->
                 onValidationError(it, inputValidationType)
             }
         ) {
@@ -127,7 +136,7 @@ class RegisterViewModel(
 
             else -> {
                 cleanErrors()
-//                register()
+                register()
             }
         }
     }
@@ -195,6 +204,34 @@ class RegisterViewModel(
         }
     }
 
+    private fun register() {
+        state = state.copy(isLoading = true)
+        viewModelScope.launch {
+            registerUseCase(
+                RegisterParams(
+                    name = state.fullName,
+                    email = state.userEMail,
+                    password = state.password
+                )
+            ).fold(
+                onError = { dataError, errorMessage ->
+                    state = state.copy(isLoading = false)
+                    val message = errorMessage ?: dataError.toString()
+                    eventSender.sendEvent(
+                        RoutineUiEvent.ShowSnackBar(
+                            DynamicString(message)
+                        )
+                    )
+                },
+                onSuccess = {
+                    state = state.copy(isLoading = false)
+                    _user.value = it
+                    _uiEvent.send(RegisterUiEvent.Navigate)
+                }
+            )
+        }
+
+    }
 
     private fun cleanErrors() {
         state = state.copy(

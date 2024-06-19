@@ -1,6 +1,3 @@
-package com.example.rotinaapp.navigation
-
-
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -15,10 +12,15 @@ import com.example.rotinaapp.features.task.presentation.home.Home
 import com.example.rotinaapp.features.task.presentation.home.HomeRoot
 
 @Composable
-internal fun RoutineNavHost() {
-    val navController = rememberNavController()
+internal fun RoutineNavHost(
+    isAuthenticated: Boolean?,
 
-    NavHost(navController = navController, startDestination = Home) {
+    ) {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = if (isAuthenticated == true) Home else Login
+    ) {
         composable<Login>(
             exitTransition = {
                 return@composable slideOutOfContainer(
@@ -50,7 +52,7 @@ internal fun RoutineNavHost() {
             RegisterRoot(navController = navController)
         }
         composable<Home> {
-            HomeRoot()
+            HomeRoot(navController = navController)
         }
 
     }

@@ -6,4 +6,9 @@ data class LoginState(
     val email: String = String.EMPTY_STRING,
     val password: String = String.EMPTY_STRING,
     val isPasswordVisible: Boolean = false,
+    val isLoading:Boolean = false,
+    val isSigInSuccess:Boolean=false,
+    val isSigInError:Boolean=false,
+
+
 )

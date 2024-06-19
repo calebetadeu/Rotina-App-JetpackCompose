@@ -6,5 +6,5 @@ sealed class LoginAction {
     data object OnChangePasswordVisibility : LoginAction()
     data object NavigateToRegisterButtonClick : LoginAction()
     data object OnLoginButtonClick : LoginAction()
-    data object  OnLoginGoogle:LoginAction()
+    data object  OnLoginGoogle :LoginAction()
 }

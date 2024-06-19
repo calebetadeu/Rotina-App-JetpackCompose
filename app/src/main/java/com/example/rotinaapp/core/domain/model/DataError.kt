@@ -1,0 +1,24 @@
+package com.example.rotinaapp.core.domain.model
+
+import com.example.rotinaapp.core.domain._util.Error
+
+sealed interface DataError : Error {
+    enum class Network : DataError {
+        UNAUTHORIZED,
+        NO_INTERNET,
+        SERVER_ERROR,
+        CANCELLATION,
+        SERIALIZATION,
+        BAD_REQUEST,
+        UNKNOWN
+    }
+
+    enum class Local : DataError {
+        DISK_FULL,
+        OPERATION_FAILED
+    }
+
+    enum class Coroutines : DataError {
+        COROUTINE_CANCELLED
+    }
+}

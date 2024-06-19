@@ -58,7 +58,8 @@ fun LoginScreen(
             isLoadingGoogle = false,
             onButtonClickedGoogleRegister = {
                 onAction(LoginAction.OnLoginGoogle)
-            }
+            },
+            isLoadingLogin = state.isLoading
         )
     }
 
@@ -74,6 +75,7 @@ fun FormLogin(
     isPasswordVisible: Boolean,
     onVisibilityIconClicked: () -> Unit,
     onNavigateToRegister: () -> Unit,
+    isLoadingLogin: Boolean,
     isLoadingGoogle: Boolean,
     onButtonClickedGoogleRegister: () -> Unit,
     onLoginButtonClicked: () -> Unit
@@ -114,7 +116,7 @@ fun FormLogin(
         ButtonBasic(
             onClick = onLoginButtonClicked,
             textButton = "Entrar",
-            isLoading = false,
+            isLoading = isLoadingLogin,
             modifier = Modifier.padding(top = spacing.spaceLarge)
         )
 
