@@ -3,6 +3,7 @@ package com.example.rotinaapp
 import android.app.Application
 import com.example.rotinaapp.core.di.coreModule
 import com.example.rotinaapp.features.auth.di.authModule
+import com.example.rotinaapp.features.task.di.homeModule
 import com.google.firebase.FirebaseApp
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -17,7 +18,7 @@ class RotinaApp : Application(){
         startKoin{
             androidLogger()
             androidContext(this@RotinaApp)
-            modules(coreModule, authModule)
+            modules(coreModule, authModule, homeModule)
         }
     }
 }

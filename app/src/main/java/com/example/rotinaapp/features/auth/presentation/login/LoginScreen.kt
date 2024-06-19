@@ -55,7 +55,7 @@ fun LoginScreen(
             onNavigateToRegister = {
                 onAction(LoginAction.NavigateToRegisterButtonClick)
             },
-            isLoadingGoogle = false,
+            isLoadingGoogle = state.isLoadingGoogle,
             onButtonClickedGoogleRegister = {
                 onAction(LoginAction.OnLoginGoogle)
             },

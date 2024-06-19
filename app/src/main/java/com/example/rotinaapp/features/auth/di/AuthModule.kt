@@ -2,10 +2,10 @@ package com.example.rotinaapp.features.auth.di
 
 import android.content.Intent
 import com.example.rotinaapp.MainActivity
-import com.example.rotinaapp.features.auth.data.AuthRepositoryImpl
 import com.example.rotinaapp.core.data.remote.service.GoogleAuthClient
 import com.example.rotinaapp.core.data.remote.service.GoogleAuthClientImpl
 import com.example.rotinaapp.features.auth.data.AuthRepository
+import com.example.rotinaapp.features.auth.data.AuthRepositoryImpl
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateConfirmPasswordUseCase
 import com.example.rotinaapp.features.auth.domain.useCase.ValidateEmailUseCase
 import com.example.rotinaapp.features.auth.domain.useCase.ValidatePasswordUseCase

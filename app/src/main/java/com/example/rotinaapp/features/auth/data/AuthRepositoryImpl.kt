@@ -28,7 +28,7 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun sigInWithIntent(): IntentSender {
-        return authRemote.signingWithIntent()
+        return authRemote.signInWithIntent()
     }
 
     override suspend fun isAuthenticated(): Result<Boolean, DataError.Network> {

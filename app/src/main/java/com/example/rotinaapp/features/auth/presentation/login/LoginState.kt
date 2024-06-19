@@ -7,6 +7,7 @@ data class LoginState(
     val password: String = String.EMPTY_STRING,
     val isPasswordVisible: Boolean = false,
     val isLoading:Boolean = false,
+    val isLoadingGoogle:Boolean = false,
     val isSigInSuccess:Boolean=false,
     val isSigInError:Boolean=false,
 

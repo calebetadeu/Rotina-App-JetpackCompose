@@ -72,6 +72,7 @@ class LoginViewModel(
         state.value.email.isNotBlank() && state.value.password.isNotBlank()
 
     fun loginWithGoogle(intent: Intent) {
+        _state.value = state.value.copy(isLoadingGoogle = true)
         viewModelScope.launch {
             loginUseCase.loginWithGoogle(
                 intent
@@ -79,6 +80,7 @@ class LoginViewModel(
                 onSuccess = {
                     _user.value = it
                     _uiEvent.send(LoginUiEvent.Navigate)
+                    _state.value = state.value.copy(isLoadingGoogle = false)
                 },
                 onError = { dataError, errorMessage ->
                     _state.value = state.value.copy(isLoading = false)
@@ -88,12 +90,14 @@ class LoginViewModel(
                             UiText.DynamicString(message)
                         )
                     )
+                    _state.value = state.value.copy(isLoadingGoogle = false)
+
                 },
             )
         }
     }
 
-    suspend fun loginWithIntent():IntentSender {
+    suspend fun loginWithIntent(): IntentSender {
         return loginUseCase.loginWithIntent()
     }
 

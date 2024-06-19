@@ -31,7 +31,7 @@ class TaskHomeViewModel(
                 if (it.currentUser == null) {
                     navigate()
                 }
-                homeUseCase.getUser(currentUser = it.currentUser)
+                homeUseCase.getUser(currentUser = it.currentUser,user=_user)
 
             }
         }
