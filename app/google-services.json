@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "500838488980",
+    "project_id": "rotina-app-7007f",
+    "storage_bucket": "rotina-app-7007f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500838488980:android:eac0e7f9466626452c0d81",
+        "android_client_info": {
+          "package_name": "com.example.rotinaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAax79nAH555MS3Ywb91_7c0-Daq2IKLAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
