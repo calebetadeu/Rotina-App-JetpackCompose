@@ -10,4 +10,9 @@ sealed class InputValidationType {
         val email: String,
         val password: String
     ) : InputValidationType()
+    data class AllFieldsLoginValidationType(
+        val email: String,
+        val password: String
+    ) : InputValidationType()
+
 }

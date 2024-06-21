@@ -43,6 +43,14 @@ class ValidateRegistrationFieldsUseCase(
                     listOfErrors.add(it)
                 }
             }
+
+            is InputValidationType.AllFieldsLoginValidationType -> {
+                validateEmailUseCase(inputValidationType.email)?.let { listOfErrors.add(it) }
+                validatePasswordUseCase(inputValidationType.password)?.let {
+                    listOfErrors.add(it)
+                }
+
+            }
         }
         return if (listOfErrors.isEmpty()) {
             Result.Success(Unit)

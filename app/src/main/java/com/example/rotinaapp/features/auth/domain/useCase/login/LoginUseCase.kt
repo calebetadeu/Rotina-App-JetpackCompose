@@ -1,7 +1,5 @@
 package com.example.rotinaapp.features.auth.domain.useCase.login
 
-import android.content.Intent
-import android.content.IntentSender
 import com.example.rotinaapp.core.domain._util.Result
 import com.example.rotinaapp.core.domain.model.DataError
 import com.example.rotinaapp.features.auth.data.AuthRepository
@@ -13,14 +11,10 @@ class LoginUseCase(
     suspend  fun login(loginParams: LoginParams): Result<UserModel, DataError.Network> {
         return authRepository.signIn(loginParams)
     }
-   suspend fun loginWithGoogle(intent: Intent):Result<UserModel,DataError.Network>{
-       return authRepository.signInWithGoogle(intent)
-
-   }
-    suspend fun loginWithIntent():IntentSender{
-        return authRepository.sigInWithIntent()
-
+    suspend fun forgotPassword(email: String): Result<String, DataError.Network> {
+        return authRepository.forgotPassword(email)
     }
+
 
 
 

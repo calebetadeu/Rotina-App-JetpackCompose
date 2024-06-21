@@ -15,4 +15,6 @@ interface GoogleAuthClient {
     suspend fun logout()
     suspend fun signingWithGoogle(intent: Intent): Result<UserModel, DataError.Network>
     suspend fun signInWithIntent(): IntentSender
+    suspend fun forgotPassword(email: String): Result<String, DataError.Network>
+
 }

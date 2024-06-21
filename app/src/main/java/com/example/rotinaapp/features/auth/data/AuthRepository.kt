@@ -16,6 +16,8 @@ interface AuthRepository {
     suspend fun sigInWithIntent ():IntentSender
     suspend fun isAuthenticated():Result< Boolean,DataError.Network>
     suspend fun logout()
-    
+    suspend fun forgotPassword(email: String): Result<String, DataError.Network>
+
+
 
 }

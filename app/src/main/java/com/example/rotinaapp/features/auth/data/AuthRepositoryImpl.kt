@@ -39,5 +39,9 @@ class AuthRepositoryImpl(
         return authRemote.logout()
     }
 
+    override suspend fun forgotPassword(email: String): Result<String, DataError.Network> {
+        return authRemote.forgotPassword(email)
+    }
+
 
 }

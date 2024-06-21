@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rotinaapp.core.domain._util.EMPTY_STRING
 import com.example.rotinaapp.coreUi.Background
 import com.example.rotinaapp.coreUi.LocalSpacing
 import com.example.rotinaapp.features.auth.presentation._common.BaseAuthScreen
@@ -59,7 +60,12 @@ fun LoginScreen(
             onButtonClickedGoogleRegister = {
                 onAction(LoginAction.OnLoginGoogle)
             },
-            isLoadingLogin = state.isLoading
+            onForgotPasswordClick = {
+                onAction(LoginAction.onForgotPasswordClick)
+            },
+            isLoadingLogin = state.isLoading,
+            emailErrMsg = state.emailErrMsg?.asString() ?: String.EMPTY_STRING,
+            passwordErrMsg = state.passwordErrMsg?.asString() ?: String.EMPTY_STRING
         )
     }
 
@@ -70,14 +76,17 @@ fun FormLogin(
     modifier: Modifier,
     email: String,
     onEmailChanged: (String) -> Unit,
+    emailErrMsg: String,
     password: String,
     onPasswordChanged: (String) -> Unit,
     isPasswordVisible: Boolean,
+    passwordErrMsg: String,
     onVisibilityIconClicked: () -> Unit,
     onNavigateToRegister: () -> Unit,
     isLoadingLogin: Boolean,
     isLoadingGoogle: Boolean,
     onButtonClickedGoogleRegister: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
     onLoginButtonClicked: () -> Unit
 ) {
     val spacing = LocalSpacing.current
@@ -97,11 +106,13 @@ fun FormLogin(
         )
         InputBasic(
             label = "Email",
+            errorMessage = emailErrMsg,
             inputText = email,
             onInputTextChanged = { onEmailChanged(it) },
         )
         InputPassword(
             passwordText = password,
+            errorMessage = passwordErrMsg,
             onPasswordChanged = { onPasswordChanged(it) },
             isVisible = isPasswordVisible,
             onVisibilityIconClick = onVisibilityIconClicked,
@@ -109,6 +120,7 @@ fun FormLogin(
         )
         TextButton(
             onClick = {
+                onForgotPasswordClick()
             }
         ) {
             Text("Esqueci minha senha", textDecoration = TextDecoration.Underline)

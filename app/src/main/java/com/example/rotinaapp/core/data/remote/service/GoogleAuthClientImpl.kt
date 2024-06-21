@@ -98,7 +98,7 @@ class GoogleAuthClientImpl(
         }
     }
 
-   override suspend fun signInWithIntent(): IntentSender {
+    override suspend fun signInWithIntent(): IntentSender {
         val result = try {
             oneTapClient.beginSignIn(
                 buildSignInRequest()
@@ -110,6 +110,18 @@ class GoogleAuthClientImpl(
 
         }
         return result?.pendingIntent?.intentSender ?: throw Exception()
+    }
+
+    override suspend fun forgotPassword(email: String): Result<String, DataError.Network> {
+      return  try {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            Result.Success("Email sent")
+        } catch (e: FirebaseAuthException) {
+            Result.Error(e.toDataError(), e.message)
+        } catch (e: Exception) {
+            Log.d("FirebaseSource", e.message.toString())
+            Result.Error(DataError.Network.UNKNOWN, e.message)
+        }
     }
 
 
